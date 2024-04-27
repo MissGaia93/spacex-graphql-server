@@ -2,10 +2,8 @@ import { RESTDataSource } from "@apollo/datasource-rest";
 
 class spaceXAPI extends RESTDataSource {
   baseURL = 'https://api.spacexdata.com/v4/';
-  //set a default for limit, sort, and offset
   
   async searchLaunchesByKeyword(limit = "10", keyword = "", sort = "asc", offset = "0") {
-    //check if 
       const launchOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -16,11 +14,7 @@ class spaceXAPI extends RESTDataSource {
             }
           },
           "options": {
-            "limit": limit,
-            "sort": {
-              "date_utc": sort
-            },
-            "offset": offset
+            "limit": limit
           },
         }),
       };
