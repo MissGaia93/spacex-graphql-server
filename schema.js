@@ -1,7 +1,7 @@
 const typeDefs = `#graphql
     type Query {
         launch(id: String!): Launch
-        launches(limit: Int, offset: Int, sort: String, keyword: String): [Launch]
+        launches(limit: Int, offset: Int, sort: String, keyword: String, page: Int, upcoming: Boolean, past: Boolean): [Launch]
         launchpad(id: String!): Launchpad
         launchpads(limit: Int, offset: Int, keywords: [String]): [Launchpad]
         payload(id: String!): Payload

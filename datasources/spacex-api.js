@@ -3,25 +3,54 @@ import { RESTDataSource } from "@apollo/datasource-rest";
 class spaceXAPI extends RESTDataSource {
   baseURL = 'https://api.spacexdata.com/v4/';
   
-  async searchLaunchesByKeyword(limit = "10", keyword = "", sort = "asc", offset = "0") {
-      const launchOptions = {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          "query": {
-            "$text": {
-              "$search": keyword
-            }
-          },
-          "options": {
-            "limit": limit
-          },
-        }),
-      };
+  async searchLaunchesByKeyword(limit = "30", keyword = "", sort = "asc", offset = "0", page = "1") {
+
+    console.log("Keyword:" + keyword);
+
+    const searchOptions = {
+      query: {
+        //$text: {
+          //$search: keyword
+        //}
+      },
+      options: {
+          limit: limit,
+          offset: offset,
+          page: page,
+          pagination: true,
+          sort: {
+            date_unix: sort
+          }
+      }
+    };
+
+    if (keyword) {
+      searchOptions.query.$text = {
+        $search: keyword
+     };
+    }
+
+    /*if (upcoming) {
+      searchOptions.query.upcoming = true;
+    }
+
+    if (past) {
+      searchOptions.query.upcoming = true;
+    }*/
+
+    const launchOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(searchOptions)
+    };
+
+      
 
       const fetchPromise = this.post('launches/query', launchOptions);
+      console.log(launchOptions);
 
       const fetchResult = await fetchPromise.then((response) => { 
+        //console.log(response);
         return response.docs;
       }, (error) => {
         return 'foobar';

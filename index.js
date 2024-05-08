@@ -9,8 +9,9 @@ import { spaceXAPI } from './datasources/spacex-api.js';
 const resolvers = {
     Query: {
 
-        launches: async (_, { limit, offset, keyword, sort }, { dataSources }) => {
-            const data = await dataSources.spaceXAPI.searchLaunchesByKeyword(limit, offset, keyword);
+        launches: async (_, { limit, keyword, offset, page, upcoming, past, sort }, { dataSources }) => {
+            ///console.log("keyword:" + keyword);
+            const data = await dataSources.spaceXAPI.searchLaunchesByKeyword( limit, keyword, offset, page, upcoming, past, sort );
             //console.log(data);
             
             return data;
@@ -106,7 +107,7 @@ const { url } = await startStandaloneServer(server, {
         const { cache } = server;
         return {
             dataSources: {
-                spaceXAPI: new spaceXAPI({ cache }),
+                spaceXAPI: new spaceXAPI(),
             },
         };
     },
